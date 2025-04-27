@@ -17,8 +17,9 @@
               mpris-discord-rpc = pkgs.callPackage ./default.nix {};
               default = mpris-discord-rpc;
             };
+          }) // {
             homeManagerModules.mpris-discord-rpc =
-              { config, lib }:
+              { config, lib, pkgs, ... }:
               with lib;
               let
                 cfg = config.services.mpris-discord-rpc;
@@ -29,7 +30,7 @@
                     enable = lib.mkEnableOption "Enable MPRIS Discord RPC";
                     package = lib.mkOption {
                       type = lib.types.package;
-                      default = packages.mpris-discord-rpc;
+                      default = self.packages.${pkgs.stdenv.hostPlatform.system}.mpris-discord-rpc;
                       description = "The package to use for mpris-discord-rpc";
                     };
                     players = lib.mkOption {
@@ -50,5 +51,5 @@
                     };
                   };
                 };
-          });
+          };
 }
